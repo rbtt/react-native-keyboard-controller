@@ -51,8 +51,6 @@ export const adjustKeyboardFrameInducedGap = (
     return {};
   }
 
-  console.log("running adjustKeyboardFrameInducedGap");
-
   const flattenedStyle = StyleSheet.flatten(contentContainerStyle);
 
   const flexDirection = flattenedStyle?.flexDirection ?? "column";
