@@ -18,7 +18,11 @@ import {
 import { findNodeHandle } from "../../utils/findNodeHandle";
 
 import { useSmoothKeyboardHandler } from "./useSmoothKeyboardHandler";
-import { debounce, scrollDistanceWithRespectToSnapPoints } from "./utils";
+import {
+  adjustKeyboardFrameInducedGap,
+  debounce,
+  scrollDistanceWithRespectToSnapPoints,
+} from "./utils";
 
 import type {
   LayoutChangeEvent,
@@ -395,6 +399,15 @@ const KeyboardAwareScrollView = forwardRef<
       [enabled],
     );
 
+    const gapOffset = useMemo(
+      () =>
+        adjustKeyboardFrameInducedGap(
+          rest.contentContainerStyle,
+          rest.horizontal || false,
+        ),
+      [rest.contentContainerStyle, rest.horizontal],
+    );
+
     return (
       <ScrollViewComponent
         ref={onRef}
@@ -403,7 +416,7 @@ const KeyboardAwareScrollView = forwardRef<
         onLayout={onScrollViewLayout}
       >
         {children}
-        {enabled && <Reanimated.View style={view} />}
+        {enabled && <Reanimated.View style={[view, gapOffset]} />}
       </ScrollViewComponent>
     );
   },
